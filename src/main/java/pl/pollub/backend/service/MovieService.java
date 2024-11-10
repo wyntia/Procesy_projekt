@@ -9,8 +9,10 @@ import pl.pollub.backend.exception.MovieNotFoundException;
 import pl.pollub.backend.model.Movie;
 import pl.pollub.backend.repository.IMovieRepository;
 
+import java.util.List;
+
 @Service
-public class MovieService implements IMovieService {
+public class MovieService implements IMovieReader, IMovieWriter {
 
     private final IMovieRepository movieRepository;
 
@@ -30,6 +32,15 @@ public class MovieService implements IMovieService {
     }
 
     @Override
+    public List<Movie> getAllMovies() {
+        try {
+            return movieRepository.findAll();
+        } catch (DataAccessException ex) {
+            throw new DatabaseOperationException("Failed to retrieve movies", ex);
+        }
+    }
+
+    @Override
     public Movie getMovieById(Long id) {
         try {
             return movieRepository.findById(id)
@@ -43,7 +54,6 @@ public class MovieService implements IMovieService {
     public Movie updateMovie(Long id, MovieDto movieDto) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
-
         updateMovieFields(movie, movieDto);
         try {
             return movieRepository.save(movie);
@@ -74,9 +84,15 @@ public class MovieService implements IMovieService {
 
     private void updateMovieFields(Movie movie, MovieDto movieDto) {
         if (movieDto.getTitle() != null) {
+            if(movieDto.getTitle().isEmpty()){
+                throw new InvalidDataException("Title cannot be empty");
+            }
             movie.setTitle(movieDto.getTitle());
         }
         if (movieDto.getGenre() != null) {
+            if(movieDto.getGenre().isEmpty()){
+                throw new InvalidDataException("Genre cannot be empty");
+            }
             movie.setGenre(movieDto.getGenre());
         }
         if (movieDto.getReleaseDate() != null) {
