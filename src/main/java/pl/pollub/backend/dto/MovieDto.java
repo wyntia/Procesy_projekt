@@ -14,13 +14,12 @@ import java.time.LocalDate;
 @Builder
 public class MovieDto {
 
-    @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Title cannot be empty")
     private String title;
 
-    @NotNull @NotEmpty
+    @NotEmpty(message = "Genre cannot be empty")
     private String genre;
 
-    @NotNull
+    @NotNull(message = "Release date cannot be null")
     private LocalDate releaseDate;
 }
