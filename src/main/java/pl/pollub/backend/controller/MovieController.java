@@ -1,5 +1,6 @@
 package pl.pollub.backend.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.backend.dto.MovieDto;
@@ -22,7 +23,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<Movie> saveMovie(@RequestBody MovieDto movieDto) {
+    public ResponseEntity<Movie> saveMovie(@Valid @RequestBody MovieDto movieDto) {
         Movie savedMovie = movieWriter.saveMovie(movieDto);
         return ResponseEntity.ok(savedMovie);
     }
