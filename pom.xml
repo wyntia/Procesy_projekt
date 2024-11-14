@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>pl.pollub</groupId>
 	<artifactId>Procesy_projekt</artifactId>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.5.4</version>
+			<version>42.7.2</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>jakarta.transaction</groupId>
 			<artifactId>jakarta.transaction-api</artifactId>
-			<scope>test</scope>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
