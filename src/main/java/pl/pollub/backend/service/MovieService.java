@@ -8,11 +8,12 @@ import pl.pollub.backend.exception.InvalidDataException;
 import pl.pollub.backend.exception.MovieNotFoundException;
 import pl.pollub.backend.model.Movie;
 import pl.pollub.backend.repository.IMovieRepository;
+import pl.pollub.backend.util.filter.Filter;
 
 import java.util.List;
 
 @Service
-public class MovieService implements IMovieReader, IMovieWriter {
+public class MovieService implements IMovieReader, IMovieWriter, IMovieFilter {
 
     private final IMovieRepository movieRepository;
 
@@ -112,4 +113,15 @@ public class MovieService implements IMovieReader, IMovieWriter {
             throw new InvalidDataException("Release date cannot be null");
         }
     }
+
+    @Override
+    public Movie[] filterMovies(Filter filter) {
+        List<Movie> movies = getAllMovies();
+        try {
+            return filter.filter(movies.toArray(new Movie[0]));
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Error occurred during filtering", ex);
+        }
+    }
+
 }
