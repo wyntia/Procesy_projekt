@@ -5,11 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.backend.dto.MovieDto;
+import pl.pollub.backend.exception.DatabaseOperationException;
+import pl.pollub.backend.exception.InvalidDataException;
 import pl.pollub.backend.model.Movie;
+import pl.pollub.backend.service.IMovieFilter;
 import pl.pollub.backend.service.IMovieReader;
 import pl.pollub.backend.service.IMovieWriter;
+import pl.pollub.backend.util.filter.GenreFilter;
+import pl.pollub.backend.util.filter.YearFilter;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -17,10 +23,12 @@ import java.util.List;
 public class MovieController {
     private final IMovieReader movieReader;
     private final IMovieWriter movieWriter;
+    private final IMovieFilter movieFilter;
 
-    public MovieController(IMovieReader movieReader, IMovieWriter movieWriter) {
+    public MovieController(IMovieReader movieReader, IMovieWriter movieWriter, IMovieFilter movieFilter) {
         this.movieReader = movieReader;
         this.movieWriter = movieWriter;
+        this.movieFilter = movieFilter;
     }
 
     @PostMapping
@@ -52,4 +60,33 @@ public class MovieController {
         movieWriter.deleteMovie(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filter/genre/{genre}")
+    public ResponseEntity<List<Movie>> filterByGenre(@PathVariable String genre) {
+        if (genre == null || genre.isEmpty()) {
+            throw new InvalidDataException("Genre cannot be null or empty");
+        }
+        try {
+            GenreFilter filter = new GenreFilter(genre);
+            Movie[] filteredMovies = movieFilter.filterMovies(filter);
+            return ResponseEntity.ok(Arrays.asList(filteredMovies));
+        } catch (DatabaseOperationException ex) {
+            throw new DatabaseOperationException("Error filtering movies by genre: " + genre, ex);
+        }
+    }
+
+    @GetMapping("/filter/year/{year}")
+    public ResponseEntity<List<Movie>> filterByYear(@PathVariable String year) {
+        int parsedYear;
+        try {
+            parsedYear = Integer.parseInt(year);
+        } catch (NumberFormatException ex) {
+            throw new InvalidDataException("The year must be a valid integer");
+        }
+
+        YearFilter filter = new YearFilter(parsedYear);
+        Movie[] filteredMovies = movieFilter.filterMovies(filter);
+        return ResponseEntity.ok(Arrays.asList(filteredMovies));
+    }
+
 }
