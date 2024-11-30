@@ -2,11 +2,14 @@ package pl.pollub.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode
 public class UserDto {
     @NotBlank(message = "Username is mandatory")
     @NotEmpty
