@@ -1,14 +1,14 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.movie;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.dao.DataAccessException;
-import pl.pollub.backend.dto.MovieDto;
+import pl.pollub.backend.dto.movie.MovieDto;
 import pl.pollub.backend.exception.DatabaseOperationException;
 import pl.pollub.backend.exception.InvalidDataException;
 import pl.pollub.backend.exception.MovieNotFoundException;
-import pl.pollub.backend.model.Movie;
-import pl.pollub.backend.repository.IMovieRepository;
+import pl.pollub.backend.model.movie.Movie;
+import pl.pollub.backend.repository.movie.IMovieRepository;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,11 +22,11 @@ import static org.mockito.Mockito.*;
 
 class MovieServiceUnitTest {
 
-    private IMovieRepository movieRepository = mock(IMovieRepository.class);
-    private MovieService movieService = new MovieService(movieRepository);
+    private final IMovieRepository movieRepository = mock(IMovieRepository.class);
+    private final MovieService movieService = new MovieService(movieRepository);
 
     @Test
-    void saveMovie_withValidData_savesAndReturnsMovie() {
+    void givenValidMovieData_whenSaveMovie_thenReturnsMovie(){
 
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle("Inception");
@@ -53,7 +53,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void saveMovie_withNullTitle_throwsInvalidDataException() {
+    void givenMovieWithNullTitle_whenSaveMovie_thenThrowsInvalidDataException() {
 
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle(null);
@@ -67,7 +67,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void saveMovie_withEmptyTitle_throwsInvalidDataException() {
+    void givenMovieWithEmptyTitle_whenSaveMovie_thenThrowsInvalidDataException() {
 
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle("");
@@ -81,7 +81,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void saveMovie_whenRepositoryThrowsDataAccessException_throwsDatabaseOperationException() {
+    void givenRepositoryThrowsDataAccessException_whenSaveMovie_thenThrowsDatabaseOperationException() {
 
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle("Inception");
@@ -97,7 +97,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void saveMovie_correctlyConvertsDtoToEntity() {
+    void givenMovieDto_whenSaveMovie_thenCorrectlyConvertsToEntity() {
 
         MovieDto movieDto = new MovieDto();
         movieDto.setTitle("Inception");
@@ -124,7 +124,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getAllMovies_whenMoviesExist_returnsListOfMovies() {
+    void givenExistingMovies_whenGetAllMovies_thenReturnsMovieList() {
 
         Movie movie1 = new Movie();
         movie1.setId(1L);
@@ -149,7 +149,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getAllMovies_whenNoMoviesExist_returnsEmptyList() {
+    void givenNoMovies_whenGetAllMovies_thenReturnsEmptyList() {
         when(movieRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Movie> result = movieService.getAllMovies();
@@ -161,7 +161,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getAllMovies_whenRepositoryThrowsDataAccessException_throwsDatabaseOperationException() {
+    void givenRepositoryThrowsDataAccessException_whenGetAllMovies_thenThrowsDatabaseOperationException() {
         when(movieRepository.findAll()).thenThrow(new DataAccessException("Database error") {});
 
         DatabaseOperationException exception = assertThrows(DatabaseOperationException.class, () -> movieService.getAllMovies());
@@ -171,7 +171,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getMovieById_whenMovieExists_returnsMovie() {
+    void givenExistingMovieId_whenGetMovieById_thenReturnsMovie() {
         Long movieId = 1L;
         Movie movie = new Movie();
         movie.setId(movieId);
@@ -193,7 +193,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getMovieById_whenMovieDoesNotExist_throwsMovieNotFoundException() {
+    void givenNonExistentMovieId_whenGetMovieById_thenThrowsMovieNotFoundException() {
         Long movieId = 1L;
 
         when(movieRepository.findById(movieId)).thenReturn(Optional.empty());
@@ -205,7 +205,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void getMovieById_whenDataAccessExceptionOccurs_throwsDatabaseOperationException() {
+    void givenRepositoryThrowsDataAccessException_whenGetMovieById_thenThrowsDatabaseOperationException() {
 
         Long movieId = 1L;
 
@@ -218,7 +218,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void updateMovie_withValidData_updatesOnlyProvidedFieldsAndReturnsUpdatedMovie() {
+    void givenValidMovieWithSingleFieldUpdate_whenUpdateMovie_thenUpdatesOnlyProvidedField() {
 
         Long movieId = 1L;
         Movie existingMovie = new Movie();
@@ -257,7 +257,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void updateMovie_withMultipleFields_updatesOnlyProvidedFields() {
+    void givenValidMovieWithMultipleFieldUpdates_whenUpdateMovie_thenUpdatesOnlyProvidedFields() {
 
         Long movieId = 1L;
         Movie existingMovie = new Movie();
@@ -297,7 +297,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void updateMovie_withInvalidData_throwsInvalidDataException() {
+    void givenMovieWithEmptyTitle_whenUpdateMovie_thenThrowsInvalidDataException() {
 
         Long movieId = 1L;
         MovieDto movieDto = new MovieDto();
@@ -322,7 +322,7 @@ class MovieServiceUnitTest {
 
 
     @Test
-    void updateMovie_whenMovieDoesNotExist_throwsMovieNotFoundException() {
+    void givenNonExistentMovieId_whenUpdateMovie_thenThrowsMovieNotFoundException() {
 
         Long movieId = 1L;
         MovieDto movieDto = new MovieDto();
@@ -340,7 +340,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void updateMovie_whenRepositoryThrowsDataAccessException_throwsDatabaseOperationException() {
+    void givenRepositoryThrowsDataAccessException_whenUpdateMovie_thenThrowsDatabaseOperationException() {
         Long movieId = 1L;
         Movie existingMovie = new Movie();
         existingMovie.setId(movieId);
@@ -362,7 +362,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void deleteMovie_whenMovieExists_deletesMovie() {
+    void givenExistingMovieId_whenDeleteMovie_thenMovieIsDeleted() {
         Long movieId = 1L;
 
         when(movieRepository.existsById(movieId)).thenReturn(true);
@@ -375,7 +375,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void deleteMovie_whenMovieDoesNotExist_throwsMovieNotFoundException() {
+    void givenNonExistentMovieId_whenDeleteMovie_thenThrowsMovieNotFoundException() {
         Long movieId = 1L;
 
         when(movieRepository.existsById(movieId)).thenReturn(false);
@@ -388,7 +388,7 @@ class MovieServiceUnitTest {
     }
 
     @Test
-    void deleteMovie_whenDataAccessExceptionOccurs_throwsDatabaseOperationException() {
+    void givenRepositoryThrowsDataAccessException_whenDeleteMovie_thenThrowsDatabaseOperationException() {
         Long movieId = 1L;
 
         when(movieRepository.existsById(movieId)).thenReturn(true);

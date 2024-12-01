@@ -1,13 +1,13 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.auth;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.pollub.backend.dto.UserDto;
+import pl.pollub.backend.dto.auth.UserDto;
 import pl.pollub.backend.exception.UserSaveException;
-import pl.pollub.backend.model.User;
-import pl.pollub.backend.repository.IUserRepository;
+import pl.pollub.backend.model.auth.User;
+import pl.pollub.backend.repository.auth.IUserRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,7 +19,7 @@ class JwtUserDetailsServiceUnitTest {
     private final JwtUserDetailsService userDetailsService = new JwtUserDetailsService(userRepository, passwordEncoder);
 
     @Test
-    void loadUserByUsername_whenUserExists_returnsUserDetails() {
+    void givenExistingUser_whenLoadByUsername_thenReturnUserDetails() {
         String username = "testuser";
         User user = new User();
         user.setUsername(username);
@@ -37,7 +37,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void loadUserByUsername_whenUserDoesNotExist_throwsUsernameNotFoundException() {
+    void givenNonexistentUser_whenLoadByUsername_thenThrowUsernameNotFoundException() {
         String username = "nonexistent";
 
         when(userRepository.findByUsername(username)).thenReturn(null);
@@ -50,7 +50,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void saveUser_withValidData_savesAndReturnsUser() {
+    void givenValidUserDto_whenSaveUser_thenSaveAndReturnUser() {
         UserDto userDto = new UserDto();
         userDto.setUsername("newuser");
         userDto.setPassword("password");
@@ -75,7 +75,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void saveUser_whenUserAlreadyExists_throwsUserSaveException() {
+    void givenExistingUsername_whenSaveUser_thenThrowUserSaveException() {
         UserDto userDto = new UserDto();
         userDto.setUsername("existinguser");
         userDto.setPassword("password");
@@ -94,7 +94,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void saveUser_correctlyConvertsDtoToEntity() {
+    void givenValidUserDto_whenSaveUser_thenConvertDtoToEntity() {
         UserDto userDto = new UserDto();
         userDto.setUsername("newuser");
         userDto.setPassword("password");
@@ -118,7 +118,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void getUserByUsername_whenUserExists_returnsUser() {
+    void givenExistingUser_whenGetByUsername_thenReturnUser() {
         String username = "testuser";
         User user = new User();
         user.setUsername(username);
@@ -134,7 +134,7 @@ class JwtUserDetailsServiceUnitTest {
     }
 
     @Test
-    void getUserByUsername_whenUserDoesNotExist_throwsUsernameNotFoundException() {
+    void givenNonexistentUser_whenGetByUsername_thenThrowUsernameNotFoundException() {
         String username = "nonexistent";
 
         when(userRepository.findByUsername(username)).thenReturn(null);

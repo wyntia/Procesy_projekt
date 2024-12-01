@@ -1,4 +1,4 @@
-package pl.pollub.backend.dto;
+package pl.pollub.backend.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

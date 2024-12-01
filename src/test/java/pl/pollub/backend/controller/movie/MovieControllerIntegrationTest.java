@@ -1,4 +1,4 @@
-package pl.pollub.backend.controller;
+package pl.pollub.backend.controller.movie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,12 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.pollub.backend.dto.MovieDto;
-import pl.pollub.backend.model.Movie;
-import pl.pollub.backend.repository.IMovieRepository;
+import pl.pollub.backend.dto.movie.MovieDto;
+import pl.pollub.backend.model.movie.Movie;
+import pl.pollub.backend.repository.movie.IMovieRepository;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
 
 import java.time.LocalDate;
 
@@ -21,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Import(JwtUserDetailsService.class)
 @ActiveProfiles("test")
 class MovieControllerIntegrationTest {
 
@@ -53,7 +57,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void saveMovie_WithValidData_ShouldReturnCreatedMovie() throws Exception {
+    @WithMockUser
+    void givenValidMovieData_whenSavingMovie_thenReturnCreatedMovie() throws Exception {
         mockMvc.perform(post("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validMovieDto)))
@@ -64,7 +69,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void saveMovie_WithInvalidData_ShouldReturnBadRequest() throws Exception {
+    @WithMockUser
+    void givenInvalidMovieData_whenSavingMovie_thenReturnBadRequest() throws Exception {
         MovieDto invalidMovieDto = new MovieDto();
         // Missing required fields
 
@@ -75,7 +81,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void getAllMovies_ShouldReturnListOfMovies() throws Exception {
+    @WithMockUser
+    void givenExistingMovies_whenRetrievingAllMovies_thenReturnMoviesList() throws Exception {
         mockMvc.perform(get("/api/movies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
@@ -85,7 +92,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void getMovieById_WithExistingId_ShouldReturnMovie() throws Exception {
+    @WithMockUser
+    void givenExistingMovieId_whenRetrievingMovieById_thenReturnMovie() throws Exception {
         mockMvc.perform(get("/api/movies/{id}", savedMovie.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is(savedMovie.getTitle())))
@@ -94,13 +102,15 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void getMovieById_WithNonExistingId_ShouldReturnNotFound() throws Exception {
+    @WithMockUser
+    void givenNonExistentMovieId_whenRetrievingMovieById_thenReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/movies/{id}", 999L))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void updateMovie_WithValidData_ShouldReturnUpdatedMovie() throws Exception {
+    @WithMockUser
+    void givenValidMovieUpdateData_whenUpdatingMovie_thenReturnUpdatedMovie() throws Exception {
         MovieDto updateDto = new MovieDto();
         updateDto.setTitle("Updated Title");
         updateDto.setGenre("Comedy");
@@ -116,7 +126,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void updateMovie_WithNonExistingId_ShouldReturnNotFound() throws Exception {
+    @WithMockUser
+    void givenNonExistentMovieId_whenUpdatingMovie_thenReturnNotFound() throws Exception {
         mockMvc.perform(put("/api/movies/{id}", 999L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validMovieDto)))
@@ -124,7 +135,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void deleteMovie_WithExistingId_ShouldReturnNoContent() throws Exception {
+    @WithMockUser
+    void givenExistingMovie_whenDeletingMovie_thenReturnNoContentAndVerifyDeleted() throws Exception {
         mockMvc.perform(delete("/api/movies/{id}", savedMovie.getId()))
                 .andExpect(status().isNoContent());
 
@@ -134,7 +146,8 @@ class MovieControllerIntegrationTest {
     }
 
     @Test
-    void deleteMovie_WithNonExistingId_ShouldReturnNotFound() throws Exception {
+    @WithMockUser
+    void givenNonExistentMovieId_whenDeletingMovie_thenReturnNotFound() throws Exception {
         mockMvc.perform(delete("/api/movies/{id}", 999L))
                 .andExpect(status().isNotFound());
     }

@@ -1,13 +1,14 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.auth;
 import pl.pollub.backend.exception.UserSaveException;
-import pl.pollub.backend.model.User;
-import pl.pollub.backend.dto.UserDto;
-import pl.pollub.backend.repository.IUserRepository;
+import pl.pollub.backend.dto.auth.UserDto;
+import pl.pollub.backend.model.auth.User;
+import pl.pollub.backend.repository.auth.IUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 
 @Service
@@ -38,6 +39,11 @@ public class JwtUserDetailsService implements UserDetailsService, IUserWriter, I
 
     @Override
     public User saveUser(UserDto userDto) {
+        String username = userDto.getUsername().trim();
+        if (username.isEmpty()) {
+            throw new UserSaveException("Username cannot be empty or consist solely of whitespace characters");
+        }
+
         User existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser != null) {
             throw new UserSaveException("User with username " + userDto.getUsername() + " already exists");

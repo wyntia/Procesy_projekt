@@ -1,7 +1,7 @@
 package pl.pollub.backend.util.filter;
 
 import lombok.RequiredArgsConstructor;
-import pl.pollub.backend.model.Movie;
+import pl.pollub.backend.model.movie.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,8 @@
-package pl.pollub.backend.model;
+package pl.pollub.backend.model.auth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -15,10 +17,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
+    @NotNull
+    @NotEmpty
     private String username;
+
     @Column(nullable = false)
     @JsonIgnore
+    @NotNull
+    @NotEmpty
     private String password;
 
 }

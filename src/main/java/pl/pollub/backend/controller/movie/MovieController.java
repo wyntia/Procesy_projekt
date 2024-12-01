@@ -1,16 +1,15 @@
-package pl.pollub.backend.controller;
+package pl.pollub.backend.controller.movie;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.pollub.backend.dto.MovieDto;
+import pl.pollub.backend.dto.movie.MovieDto;
 import pl.pollub.backend.exception.DatabaseOperationException;
 import pl.pollub.backend.exception.InvalidDataException;
-import pl.pollub.backend.model.Movie;
-import pl.pollub.backend.service.IMovieFilter;
-import pl.pollub.backend.service.IMovieReader;
-import pl.pollub.backend.service.IMovieWriter;
+import pl.pollub.backend.model.movie.Movie;
+import pl.pollub.backend.service.movie.IMovieFilter;
+import pl.pollub.backend.service.movie.IMovieReader;
+import pl.pollub.backend.service.movie.IMovieWriter;
 import pl.pollub.backend.util.filter.GenreFilter;
 import pl.pollub.backend.util.filter.YearFilter;
 

@@ -1,4 +1,4 @@
-package pl.pollub.backend.model;
+package pl.pollub.backend.model.auth;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
