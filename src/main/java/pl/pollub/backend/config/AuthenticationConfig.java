@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.pollub.backend.service.JwtUserDetailsService;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
 
 @Configuration
 public class AuthenticationConfig {

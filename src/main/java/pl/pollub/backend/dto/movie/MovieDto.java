@@ -1,4 +1,4 @@
-package pl.pollub.backend.dto;
+package pl.pollub.backend.dto.movie;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

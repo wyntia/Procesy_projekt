@@ -1,7 +1,7 @@
-package pl.pollub.backend.repository;
+package pl.pollub.backend.repository.auth;
 import org.springframework.stereotype.Repository;
-import pl.pollub.backend.model.User;
 import org.springframework.data.repository.CrudRepository;
+import pl.pollub.backend.model.auth.User;
 
 @Repository
 public interface IUserRepository extends CrudRepository<User, Long>

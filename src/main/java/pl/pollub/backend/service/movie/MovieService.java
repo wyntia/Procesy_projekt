@@ -1,13 +1,13 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.movie;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import pl.pollub.backend.dto.MovieDto;
+import pl.pollub.backend.dto.movie.MovieDto;
 import pl.pollub.backend.exception.DatabaseOperationException;
 import pl.pollub.backend.exception.InvalidDataException;
 import pl.pollub.backend.exception.MovieNotFoundException;
-import pl.pollub.backend.model.Movie;
-import pl.pollub.backend.repository.IMovieRepository;
+import pl.pollub.backend.model.movie.Movie;
+import pl.pollub.backend.repository.movie.IMovieRepository;
 import pl.pollub.backend.util.filter.Filter;
 
 import java.util.List;

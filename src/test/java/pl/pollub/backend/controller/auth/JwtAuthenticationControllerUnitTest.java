@@ -1,5 +1,4 @@
-package pl.pollub.backend.controller;
-
+package pl.pollub.backend.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,12 +13,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.pollub.backend.config.JwtTokenUtil;
-import pl.pollub.backend.dto.UserDto;
+import pl.pollub.backend.dto.auth.UserDto;
 import pl.pollub.backend.exception.GlobalExceptionHandler;
 import pl.pollub.backend.exception.InvalidCredentialsException;
-import pl.pollub.backend.model.JwtRequest;
-import pl.pollub.backend.model.User;
-import pl.pollub.backend.service.JwtUserDetailsService;
+import pl.pollub.backend.model.auth.User;
+import pl.pollub.backend.model.auth.JwtRequest;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
+
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
@@ -46,7 +46,7 @@ class JwtAuthenticationControllerUnitTest {
     private AuthenticationManager authenticationManager;
 
     @Test
-    void createAuthenticationToken_withValidCredentials_returnsJwtToken() throws Exception {
+    void givenValidUserCredentials_whenGenerateToken_thenReturnJwtToken() throws Exception {
         JwtRequest request = new JwtRequest("testUser", "testPassword");
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 "testUser", "encodedPassword", new ArrayList<>());
@@ -68,7 +68,7 @@ class JwtAuthenticationControllerUnitTest {
     }
 
     @Test
-    void createAuthenticationToken_withInvalidCredentials_returnsUnauthorized() throws Exception {
+    void givenInvalidUserCredentials_whenGenerateToken_thenReturnUnauthorized() throws Exception {
         JwtRequest request = new JwtRequest("testUser", "wrongPassword");
 
         doThrow(new InvalidCredentialsException("Invalid username or password"))
@@ -88,7 +88,7 @@ class JwtAuthenticationControllerUnitTest {
     }
 
     @Test
-    void register_withValidData_createsAndReturnsUser() throws Exception {
+    void givenValidUserCredentials_whenRegister_thenReturnUser() throws Exception {
         UserDto userDto = UserDto.builder()
                 .username("testUser")
                 .password("testPassword")
@@ -108,8 +108,5 @@ class JwtAuthenticationControllerUnitTest {
 
         verify(userDetailsService, times(1)).saveUser(eq(userDto));
     }
-
-
-
 
 }

@@ -1,6 +1,6 @@
 package pl.pollub.backend.config;
 import pl.pollub.backend.exception.JwtAuthenticationException;
-import pl.pollub.backend.service.JwtUserDetailsService;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
 import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

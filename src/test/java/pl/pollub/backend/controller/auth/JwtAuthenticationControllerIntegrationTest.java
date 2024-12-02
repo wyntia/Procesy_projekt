@@ -1,4 +1,4 @@
-package pl.pollub.backend.controller;
+package pl.pollub.backend.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.pollub.backend.dto.UserDto;
-import pl.pollub.backend.model.User;
-import pl.pollub.backend.repository.IUserRepository;
+import pl.pollub.backend.dto.auth.UserDto;
+import pl.pollub.backend.model.auth.User;
+import pl.pollub.backend.repository.auth.IUserRepository;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,7 +53,7 @@ class JwtAuthenticationControllerIntegrationTest {
     }
 
     @Test
-    void registerUser_WithValidData_ShouldReturnCreatedUser() throws Exception {
+    void givenValidUserData_whenRegisterUser_thenReturnCreatedUser() throws Exception {
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validUserDto)))
@@ -63,7 +63,7 @@ class JwtAuthenticationControllerIntegrationTest {
     }
 
     @Test
-    void authenticateUser_WithValidCredentials_ShouldReturnJwtToken() throws Exception {
+    void givenValidUserCredentials_whenAuthenticateUser_thenReturnJwtToken() throws Exception {
         UserDto loginDto = UserDto.builder()
                 .username("existinguser")
                 .password("password")
@@ -77,7 +77,7 @@ class JwtAuthenticationControllerIntegrationTest {
     }
 
     @Test
-    void authenticateUser_WithInvalidCredentials_ShouldReturnUnauthorized() throws Exception {
+    void givenInvalidUserCredentials_whenAuthenticateUser_thenReturnUnauthorized() throws Exception {
         UserDto invalidLoginDto = UserDto.builder()
                 .username("existinguser")
                 .password("wrongpassword")
@@ -90,7 +90,7 @@ class JwtAuthenticationControllerIntegrationTest {
     }
 
     @Test
-    void authenticateUser_WithNonExistingUser_ShouldReturnUnauthorized() throws Exception {
+    void givenNonExistingUserCredentials_whenAuthenticateUser_thenReturnUnauthorized() throws Exception {
         UserDto nonExistingUserDto = UserDto.builder()
                 .username("nonexistinguser")
                 .password("password123")

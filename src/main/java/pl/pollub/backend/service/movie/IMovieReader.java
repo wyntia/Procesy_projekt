@@ -1,6 +1,6 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.movie;
 
-import pl.pollub.backend.model.Movie;
+import pl.pollub.backend.model.movie.Movie;
 
 import java.util.List;
 

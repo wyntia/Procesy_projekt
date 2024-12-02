@@ -1,12 +1,12 @@
-package pl.pollub.backend.controller;
+package pl.pollub.backend.controller.auth;
 import jakarta.validation.Valid;
 import pl.pollub.backend.config.JwtTokenUtil;
 import pl.pollub.backend.exception.InvalidCredentialsException;
-import pl.pollub.backend.model.JwtRequest;
-import pl.pollub.backend.model.JwtResponse;
-import pl.pollub.backend.dto.UserDto;
-import pl.pollub.backend.model.User;
-import pl.pollub.backend.service.JwtUserDetailsService;
+import pl.pollub.backend.model.auth.User;
+import pl.pollub.backend.model.auth.JwtRequest;
+import pl.pollub.backend.model.auth.JwtResponse;
+import pl.pollub.backend.dto.auth.UserDto;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,7 +32,7 @@ public class JwtAuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtResponse> createAuthenticationToken(
-            @Valid @RequestBody JwtRequest authenticationRequest) throws Exception {
+            @Valid @RequestBody JwtRequest authenticationRequest) {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -43,12 +43,12 @@ public class JwtAuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody UserDto user) throws Exception {
+    public ResponseEntity<User> saveUser(@Valid @RequestBody UserDto user) {
         User savedUser = userDetailsService.saveUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {

@@ -1,4 +1,4 @@
-package pl.pollub.backend.model;
+package pl.pollub.backend.model.auth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

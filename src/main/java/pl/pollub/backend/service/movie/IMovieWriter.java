@@ -1,7 +1,7 @@
-package pl.pollub.backend.service;
+package pl.pollub.backend.service.movie;
 
-import pl.pollub.backend.dto.MovieDto;
-import pl.pollub.backend.model.Movie;
+import pl.pollub.backend.dto.movie.MovieDto;
+import pl.pollub.backend.model.movie.Movie;
 
 public interface IMovieWriter {
 

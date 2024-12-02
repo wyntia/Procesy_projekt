@@ -1,4 +1,4 @@
-package pl.pollub.backend.model;
+package pl.pollub.backend.model.movie;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
