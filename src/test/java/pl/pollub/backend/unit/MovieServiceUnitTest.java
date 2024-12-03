@@ -1,4 +1,4 @@
-package pl.pollub.backend.service.movie;
+package pl.pollub.backend.unit;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -9,6 +9,7 @@ import pl.pollub.backend.exception.InvalidDataException;
 import pl.pollub.backend.exception.MovieNotFoundException;
 import pl.pollub.backend.model.movie.Movie;
 import pl.pollub.backend.repository.movie.IMovieRepository;
+import pl.pollub.backend.service.movie.MovieService;
 
 import java.time.LocalDate;
 import java.util.Arrays;
