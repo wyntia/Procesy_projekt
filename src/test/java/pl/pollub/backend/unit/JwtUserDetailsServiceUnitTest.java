@@ -1,4 +1,4 @@
-package pl.pollub.backend.service.auth;
+package pl.pollub.backend.unit;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -8,6 +8,7 @@ import pl.pollub.backend.dto.auth.UserDto;
 import pl.pollub.backend.exception.UserSaveException;
 import pl.pollub.backend.model.auth.User;
 import pl.pollub.backend.repository.auth.IUserRepository;
+import pl.pollub.backend.service.auth.JwtUserDetailsService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
