@@ -1,4 +1,4 @@
-package pl.pollub.backend.controller.auth;
+package pl.pollub.backend.unit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.pollub.backend.config.JwtTokenUtil;
+import pl.pollub.backend.controller.auth.JwtAuthenticationController;
 import pl.pollub.backend.dto.auth.UserDto;
 import pl.pollub.backend.exception.GlobalExceptionHandler;
 import pl.pollub.backend.exception.InvalidCredentialsException;

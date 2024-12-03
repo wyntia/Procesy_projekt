@@ -1,4 +1,4 @@
-package pl.pollub.backend.controller.movie;
+package pl.pollub.backend.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
